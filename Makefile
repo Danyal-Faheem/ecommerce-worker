@@ -6,10 +6,10 @@ help: ## display this help message
 	@grep '^[a-zA-Z]' $(MAKEFILE_LIST) | sort | awk -F ':.*?## ' 'NF==2 {printf "\033[36m  %-25s\033[0m %s\n", $$1, $$2}'
 
 requirements:  ## install requirements for local development
-	pip3 install -r requirements/test.txt
+	pip install -r requirements/test.txt
 
 requirements_tox:  ## install tox requirements
-	pip3 install -r requirements/tox.txt
+	pip install -r requirements/tox.txt
 
 worker: ## start the Celery worker process
 	celery -A ecommerce_worker worker --app=$(PACKAGE).celery_app:app --loglevel=info --queue=fulfillment,email_marketing
