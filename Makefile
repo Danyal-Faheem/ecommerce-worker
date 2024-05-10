@@ -1,22 +1,21 @@
 PACKAGE = ecommerce_worker
-PYTHON_VERSION_TOX_VAR=$(if $(PYTHON_VERSION_TOX),$(PYTHON_VERSION_TOX),py312)
-PYTHON_VERSION_VAR=$(if $(PYTHON_VERSION),$(PYTHON_VERSION),3.12)
+PYTHON_VERSION_VAR=$(if $(PYTHON_VERSION),$(PYTHON_VERSION),py312)
 
 help: ## display this help message
 	@echo "Please use \`make <target>' where <target> is one of"
 	@grep '^[a-zA-Z]' $(MAKEFILE_LIST) | sort | awk -F ':.*?## ' 'NF==2 {printf "\033[36m  %-25s\033[0m %s\n", $$1, $$2}'
 
 requirements:  ## install requirements for local development
-	pip${PYTHON_VERSION_VAR} install -r requirements/test.txt
+	pip install -r requirements/test.txt
 
 requirements_tox:  ## install tox requirements
-	pip${PYTHON_VERSION_VAR} install -r requirements/tox.txt
+	pip install -r requirements/tox.txt
 
 worker: ## start the Celery worker process
 	celery -A ecommerce_worker worker --app=$(PACKAGE).celery_app:app --loglevel=info --queue=fulfillment,email_marketing
 
 test: requirements_tox  ## run unit tests and report on coverage
-	tox -e ${PYTHON_VERSION_TOX_VAR}
+	tox -e ${PYTHON_VERSION_VAR}
 
 quality: requirements_tox  ## run pep8 and pylint
 	tox -e quality
