@@ -41,7 +41,7 @@ jobs:
       env:
         TARGETS: ${{ matrix.test-target }}
       run: |
-        docker exec ecomworker bash -c "cd /edx/app/ecomworker/ecomworker && PYTHON_VERSION_TOX=$PYTHON_VERSION make $TARGETS"
+        docker exec ecomworker bash -c "cd /edx/app/ecomworker/ecomworker && PYTHON_VERSION=$PYTHON_VERSION make $TARGETS"
 
     - name: Run Coverage
       if: matrix.test-target == 'test' && matrix.python-version == '3.8'
