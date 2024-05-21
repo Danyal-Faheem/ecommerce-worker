@@ -37,6 +37,12 @@ jobs:
         PYTHON_VERSION=${{ matrix.python-version }}
         FORMATTED_VERSION=${PYTHON_VERSION/3./py3} 
         echo "PYTHON_VERSION=$FORMATTED_VERSION" >> $GITHUB_ENV
+    - name: Install dependencies
+      run: |
+          docker exec -t ecommerce_testing bash -c "
+            cd /edx/app/ecommerce/ecommerce/ &&
+            python${{ matrix.python-version }} -m pip install tox
+          "
     - name: Run Tests
       env:
         TARGETS: ${{ matrix.test-target }}
